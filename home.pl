@@ -10,9 +10,17 @@ my @sqloutput=();
 
 use strict;
 use CGI qw(:standard);
+use HTML::Template;
 use DBI;
 use Time::ParseDate;
 my $dbuser="lsk250";
 my $dbpasswd="z50uWdjGo";
 print "Content-type: text/html\n\n";
-print "hello";
+# open the html template
+  my $template = HTML::Template->new(filename => 'test.tmpl');
+
+  # fill in some parameters
+  $template->param(HOME => $ENV{HOME});
+  $template->param(PATH => $ENV{PATH});
+# send the obligatory Content-Type and print the template output
+  print $template->output;
