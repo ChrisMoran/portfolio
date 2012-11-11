@@ -7,7 +7,7 @@
 my $debug=0; # default - will be overriden by a form parameter or cookie
 my @sqlinput=();
 my @sqloutput=();
-
+use lib "/home/lsk250/myperllib";
 use strict;
 use CGI qw(:standard);
 use HTML::Template;
@@ -24,3 +24,4 @@ print "Content-type: text/html\n\n";
   $template->param(PATH => $ENV{PATH});
 # send the obligatory Content-Type and print the template output
   print $template->output;
+ 
