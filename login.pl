@@ -13,7 +13,7 @@ if(ValidUser($user, $password)) {
 			-value=>$cookieValue,
 			-expires=>'+1h');
     # change location to user home page once that works
-    print header(-expires=>'now', -location=>'success.html', -cookie=>$cookie);
+    print header(-expires=>'now', -location=>'userHome.pl', -cookie=>$cookie);
 } else {
     #have some error message about login failing, no big deal now
     print header(-expires=>'now', -location=>'login.html');

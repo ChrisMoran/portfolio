@@ -3,7 +3,7 @@ package portfolio_util;
 require Exporter;
 
 @ISA=qw(Exporter);
-@EXPORT=qw(ValidUser UserExists AddUser);
+@EXPORT=qw(ValidUser UserExists AddUser CreatePortfolio PortfolioInfo);
 
 
 BEGIN {
@@ -41,4 +41,15 @@ sub UserExists {
 sub AddUser {
     my ($user, $pass) = @_;
     ExecStockSQL(undef, 'insert into users (name, password) values (?, ?)', $user, $pass);
+}
+
+sub PortfolioInfo {
+    my ($user) = @_;
+    my @results = ExecStockSQL(undef, 'select id, portfolio_name, assets from Portfolios where user_name=?', $user);
+    return @results;
+}
+
+sub CreatePortfolio {
+    my ($user, $portfolio_name, $cash_amount) = @_;
+    ExecStockSQL(undef, 'insert into portfolios (user_name, assets, portfolio_name) values (?, ?, ?)', $user, $cash_amount, $portfolio_name);
 }

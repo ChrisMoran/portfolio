@@ -1,0 +1,25 @@
+<html>
+<head>
+
+</head>
+<body>	
+  <div id="portfolios">
+    <h2>Active Portfolios</h2>
+	<ul>
+	<TMPL_LOOP NAME="PORTFOLIOS">
+		   <li>
+		   <a href="portflio.pl?id=<TMPL_VAR NAME="ID">"><TMPL_VAR NAME="NAME"></a>
+		   Cash amount: <TMPL_VAR NAME="CASH">
+		   </li>
+	</TMPL_LOOP>
+	</ul>
+  </div>
+  <div id="newPortfolios">
+    <form action="createPortfolio.pl" method="POST">
+      Name: <input type="text" name="portfolio_name"/>
+      Cash Amount: <input type="text" name="cash_amount"/>
+      <input type="submit" value="Create"/>
+    </form>
+  </div>
+</body>
+</html>
