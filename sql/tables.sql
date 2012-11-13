@@ -40,11 +40,7 @@ CREATE TABLE Holdings (
        portfolio number NOT NULL REFERENCES Portfolios(id),
        symbol char(16) NOT NULL REFERENCES AllStockSymbols(symbol),
        shares number NOT NULL, -- number of shares of stock
-       purchase_date number NOT NULL, --
-       purchase_price number NOT NULL,
-       sell_date number default NULL, -- if null haven't sold
-       sell_price number default NULL,
-       constraint pk_holdings primary key (portfolio, symbol, purchase_date)
+       constraint pk_holdings primary key (portfolio, symbol)
 );
 
 -- trigger for auto increment functionality for portfolio id
@@ -56,5 +52,53 @@ begin
 end;
 /
 
+create table BuyHistory (
+       portfolio number NOT NULL REFERENCES Portfolios(id),	
+       symbol char(16) NOT NULL REFERENCES AllStockSymbols(symbol),
+       shares number NOT NULL, -- number of shares of stock
+       timestamp number NOT NULL,
+       constraint buyhistory_pk primary key (portfolio, symbol, timestamp)
+);
+
+create table SellHistory (
+       portfolio number NOT NULL REFERENCES Portfolios(id),	
+       symbol char(16) NOT NULL REFERENCES AllStockSymbols(symbol),
+       shares number NOT NULL, -- number of shares of stock
+       timestamp number NOT NULL,
+       constraint sellhistory_pk primary key (portfolio, symbol, timestamp)
+);
+
+-- shortcut to get unix timestamp
+create view UnixTime as SELECT (sysdate - to_date('01-JAN-1970','DD-MON-YYYY')) * (86400) as dt FROM dual;
+
+-- add buy row when inserting a new value
+create or replace trigger holdings_insert
+after insert on Holdings
+for each row
+begin
+	insert into BuyHistory (portfolio, symbol, shares, timestamp) values (:NEW.portfolio, :NEW.symbol, :NEW.shares, (select dt from UnixTime));
+end;
+/
+
+-- add buy row when shares increase
+create or replace trigger holdings_update_buy
+after update on Holdings
+for each row
+when (NEW.shares > OLD.shares)
+begin
+	insert into BuyHistory (portfolio, symbol, shares, timestamp) values (:NEW.portfolio, :NEW.symbol, :NEW.shares - :OLD.shares, (select dt from UnixTime));
+end;
+/
+
+-- add sell row when shares decrease
+create or replace trigger holdings_update_sell
+after update on Holdings
+for each row
+when (NEW.shares < OLD.shares)
+begin
+	insert into SellHistory (portfolio, symbol, shares, timestamp) values (:NEW.portfolio, :NEW.symbol, :OLD.shares - :NEW.shares, (select dt from UnixTime));
+end;
+/
+
 -- also need table for caching portfolio stats like coefficient of variation and Beta
--- not sure what that should look like yet, so no worries
+
