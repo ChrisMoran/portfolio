@@ -1,0 +1,48 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="jquery.flot.js"> </script>
+</head>
+<body>
+<h1>Historical</h1>
+<h2><TMPL_VAR NAME=HOME></h2>
+<div id='plot-placeholder'style="width:600px;height:300px">
+
+</div>
+<input class="interval-rb" type="radio" name="group1" value="week" checked='true'/> Week
+<input class="interval-rb" type="radio" name="group1" value="month"/> Month
+<input class="interval-rb" type="radio" name="group1" value="quarter"/> Quarter
+<input class="interval-rb" type="radio" name="group1" value="year"/> Yr
+<input class="interval-rb" type="radio" name="group1" value="5year"/> 5Yr
+
+<script>
+//Helper to get an URL parameter
+function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
+tempdata=0
+function startPlotting(){
+var interval = $('.interval-rb:checked').val();
+console.log(interval);
+var symbol = getURLParameter("symbol");
+var dataToSend={"symbol":symbol, "interval":interval};
+  $.getJSON('historical-json.pl', dataToSend, function(data){
+		tempdata=data;
+		console.log(data)
+		$.plot($("#plot-placeholder"), [data.plot_data]);
+	});
+
+}
+
+jQuery(document).ready(function($) {
+	//bind a handler for the interval radio button's
+	$(".interval-rb").change(function(){
+		startPlotting();
+	});
+	startPlotting();
+});
+</script>
+</body>
+</html>
