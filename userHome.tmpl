@@ -14,7 +14,25 @@
 	</TMPL_LOOP>
 	</ul>
   </div>
+  <div id="transferPortfolios">
+    <h3>Transfer</h3>
+    <form action="transferPortfolio.pl" method="POST">
+      From: <select name="from">
+	<TMPL_LOOP NAME="PORTFOLIOS">
+	  <option value="<TMPL_VAR NAME="ID">"><TMPL_VAR NAME="NAME"></option>
+	</TMPL_LOOP>
+      </select>
+      To: <select name="to">
+	<TMPL_LOOP NAME="PORTFOLIOS">
+	  <option value="<TMPL_VAR NAME="ID">"><TMPL_VAR NAME="NAME"></option>
+	</TMPL_LOOP>
+      </select>
+      Amount: <input type="text" name="amount"/>
+      <input type="submit" value="Transfer"/>
+    </form>
+  </div>
   <div id="newPortfolios">
+    <h3>Create</h3>
     <form action="createPortfolio.pl" method="POST">
       Name: <input type="text" name="portfolio_name"/>
       Cash Amount: <input type="text" name="cash_amount"/>

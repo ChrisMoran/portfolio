@@ -3,7 +3,7 @@ package portfolio_util;
 require Exporter;
 
 @ISA=qw(Exporter);
-@EXPORT=qw(ValidUser UserExists AddUser CreatePortfolio PortfolioInfo);
+@EXPORT=qw(ValidUser UserExists AddUser CreatePortfolio PortfolioInfo TransferPortfolios PortfolioCashBalance);
 
 
 BEGIN {
@@ -52,4 +52,30 @@ sub PortfolioInfo {
 sub CreatePortfolio {
     my ($user, $portfolio_name, $cash_amount) = @_;
     ExecStockSQL(undef, 'insert into portfolios (user_name, assets, portfolio_name) values (?, ?, ?)', $user, $cash_amount, $portfolio_name);
+}
+
+sub PortfolioCashBalance {
+    my ($user, $id) = @_;
+    my @results = ExecStockSQL('COL', 'select assets from portfolios where user_name=? and id=?', $user, $id);
+    return $results[0];
+}
+
+# assumes value have been checked already
+sub TransferPortfolios {
+    my ($user, $fromId, $toId, $amount) = @_;
+    $toId = int($toId);
+    $fromId = int($fromId);
+    ExecStockSQL(undef, 
+		 'update portfolios set assets = case id when to_number(?) then (select assets from portfolios where user_name=? and id=?) - ? when to_number(?) then (select assets from portfolios where user_name=? and id=?) + ? end where id in (?, ?) and user_name=?', 
+		 $fromId, 
+		 $user,
+		 $fromId, 
+		 $amount, 
+		 $toId, 
+		 $user, 
+		 $toId, 
+		 $amount, 
+		 $toId, 
+		 $fromId, 
+		 $user);
 }
