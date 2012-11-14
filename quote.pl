@@ -4,13 +4,14 @@ use Data::Dumper;
 use CGI qw(:standard);
 use Finance::Quote;
 
+
 use portfolio_util;
+
 use stock_data_access;
 
 #declare subroutine trim
 sub trim($);
 
-#need to change later
 my $portfolio = param('id');
 my $userCookie = cookie('portSession');
 if(defined($userCookie) && defined($portfolio)) {
@@ -43,9 +44,11 @@ if(defined($userCookie) && defined($portfolio)) {
 		@shares = ExecStockSQL('COL',"SELECT shares FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $symbol);
 		print "<td>",$shares[0],"</td>";
 		print "<td><a href=\"newtrade.pl?act=newtrade&id=$portfolio&stock=$symbol\">New Trade</a></td>";
+
 	    }
 	    print "</tr>";
 	}
+
 	print "</table><br/>";
 	print "<a href=\"userHome.pl\">Return to home</a>";
     }
