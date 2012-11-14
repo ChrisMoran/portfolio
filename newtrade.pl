@@ -1,25 +1,6 @@
 #!/usr/bin/perl -w
 use CGI qw(:standard);
 use Finance::Quote;
-<<<<<<< HEAD
-=======
-BEGIN {
-  $ENV{PORTF_DBMS}="oracle";
-  $ENV{PORTF_DB}="lsk250";
-  $ENV{PORTF_DBUSER}="lsk250";
-  $ENV{PORTF_DBPASS}="z50uWdjGo";
-
-  unless ($ENV{BEGIN_BLOCK}) {
-    use Cwd;
-    $ENV{ORACLE_BASE}="/raid/oracle11g/app/oracle/product/11.2.0.1.0";
-    $ENV{ORACLE_HOME}=$ENV{ORACLE_BASE}."/db_1";
-    $ENV{ORACLE_SID}="CS339";
-    $ENV{LD_LIBRARY_PATH}=$ENV{ORACLE_HOME}."/lib";
-    $ENV{BEGIN_BLOCK} = 1;
-    exec 'env',cwd().'/'.$0,@ARGV;
-  }
-};
->>>>>>> 95c41929884f60305df2f649cf7acf0757f5c878
 
 use portfolio_util;
 use stock_data_access;
@@ -89,7 +70,6 @@ if(defined($userCookie) && defined($portfolio)) {
 	# print "Shares",$shares,p;
 	# print "Action",$direction,p;
 	
-<<<<<<< HEAD
 	    @exist= ExecStockSQL('COL',"SELECT count(*) FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $stock);
 	    if ($exist[0]) {
 		if ($direction eq "Sell") {
@@ -131,49 +111,6 @@ if(defined($userCookie) && defined($portfolio)) {
 			}
 		    }
 		    
-=======
-	@exist= ExecStockSQL('COL',"SELECT count(*) FROM lsk250.Holdings WHERE portfolio = $portfolio AND symbol = \'$stock\'");
-	if ($exist[0]) {
-		if ($direction eq "Sell") {
-			@curr_shares = ExecStockSQL('COL',"SELECT shares FROM lsk250.Holdings WHERE portfolio=$portfolio AND symbol=\'$stock\'");
-			if ($shares>$curr_shares[0]) {
-					print h2("Transaction failure: not enough shares.");
-				} else {
-					my $shares_left = $curr_shares[0]-$shares;
-					eval {
-						ExecStockSQL(undef,"UPDATE lsk250.Portfolios SET assets=assets+$transact_amt WHERE id=$portfolio");
-						ExecStockSQL(undef,"COMMIT");
-						ExecStockSQL(undef,"UPDATE lsk250.Holdings SET shares=$shares_left WHERE portfolio=$portfolio AND symbol=\'$stock\'");
-						if ($shares_left==0) {
-							ExecStockSQL(undef,"DELETE FROM lsk250.Holdings WHERE portfolio=$portfolio AND symbol=\'$stock\'");
-						}
-					};
-					if ($@) { 
-						print h2("Transaction failure");
-					} else {
-						print h2("Transaction successful");
-					}
-			}
-			
-		} elsif ($direction eq "Buy") {
-			@asset = ExecStockSQL('COL',"SELECT assets FROM lsk250.Portfolios WHERE id=$portfolio");
-			if ($transact_amt>$asset[0]) {
-					print h2("Transaction failure: not enough cash.");
-				} else {
-					my $asset_left = $asset[0]-$transact_amt;
-					eval {
-						ExecStockSQL(undef,"UPDATE lsk250.Portfolios SET assets=$asset_left WHERE id=$portfolio");
-						ExecStockSQL(undef,"UPDATE lsk250.Holdings SET shares=shares+$shares WHERE portfolio=$portfolio AND symbol=\'$stock\'");
-						ExecStockSQL(undef,"COMMIT");};
-					if ($@) { 
-						print $@,p;
-						print h2("Transaction failure");
-					} else {
-						 print h2("Transaction successful");
-					}
-				}
-			
->>>>>>> 95c41929884f60305df2f649cf7acf0757f5c878
 		} else {
 		    print h2("Transaction failure: unknown trade action.");
 		}
@@ -182,7 +119,7 @@ if(defined($userCookie) && defined($portfolio)) {
 		if ($direction eq "Sell") {
 		    print h2("You do not own stock $stock");
 		} elsif ($direction eq "Buy") {
-<<<<<<< HEAD
+
 		    @asset = ExecStockSQL('COL',"SELECT assets FROM Portfolios WHERE id=?", $portfolio);
 		    if ($transact_amt>$asset[0]) {
 			print h2("Transaction failure: not enough cash.");
@@ -198,23 +135,6 @@ if(defined($userCookie) && defined($portfolio)) {
 			}
 		    }
 		    
-=======
-			@asset = ExecStockSQL('COL',"SELECT assets FROM lsk250.Portfolios WHERE id=$portfolio");
-			if ($transact_amt>$asset[0]) {
-					print h2("Transaction failure: not enough cash.");
-				} else {
-					my $asset_left = $asset[0]-$transact_amt;
-					eval{
-					ExecStockSQL(undef,"UPDATE lsk250.Portfolios SET assets=$asset_left WHERE id=$portfolio");
-					ExecStockSQL(undef,"INSERT INTO lsk250.Holdings(portfolio,symbol,shares) VALUES ($portfolio,\'$stock\',$shares)");};
-					if ($@) { 
-						print h2("Transaction failure");
-					} else {
-						print h2("Transaction successful");
-					}
-				}
-			
->>>>>>> 95c41929884f60305df2f649cf7acf0757f5c878
 		} else {
 		    print h2("Transaction failure: unknown trade action.");
 		}
