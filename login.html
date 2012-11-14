@@ -1,20 +1,61 @@
 <html>
   <head>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <style type="text/css">
+    
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #999;
+      }
+
+      .form-signin {
+        max-width: 300px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+
+    
+    </style>
   </head>
   <body>
-    <h2>Portfolio Manager</h2>
-    <form action="login.pl" method="post">
-      Username: <input type="text" name="username"/>
-      Password: <input type="password" name="password"/>
-      <input type="submit" value="Log-in"/>
+    <div class="container">
+      <form class="form-signin" action="login.pl" method="post">
+	<h2 class="form-signin-heading">Portfolio Manager</h2>
+	<input type="text" class="input-block-level" placeholder="Username" name="username"/>
+	<input type="password" class="input-block-level" placeholder="Password" name="password"/>
+	<button class="btn btn-large btn-primary" type="submit">Log in</button>
+      </form>
+      <br/>
+      <form class="form-signin" action="createUser.pl" method="post">
+	<h4>Create a new account</h4>
+	<input type="text" class="input-block-level" placeholder="Username" name="username"/>
+	<input type="password" class="input-block-level" placeholder="Password" name="password"/>
+	<button class="btn btn-medium btn-primary" type="submit">Create</button>
     </form>
-    <h4>Create a new account</h4>
-    <form action="createUser.pl" method="post">
-      Username: <input type="text" name="username"/>
-      Password: <input type="password" name="password"/>
-      <input type="submit" value="Create"/>
-    </form>
+    </div>
+    
   </body>
 
 </html>
