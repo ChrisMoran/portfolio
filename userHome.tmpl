@@ -45,7 +45,7 @@
 	  <tbody>
 	    <TMPL_LOOP NAME="PORTFOLIOS">
 	      <tr>
-		<td><a href="portflio.pl?id=<TMPL_VAR NAME="ID">"><TMPL_VAR NAME="NAME"></a></td>
+		<td><a href="quote.pl?id=<TMPL_VAR NAME="ID">"><TMPL_VAR NAME="NAME"></a></td>
 		<td><TMPL_VAR NAME="CASH"></td>
 	      </tr>
 	    </TMPL_LOOP>
@@ -76,7 +76,7 @@
 		</form>
 	      </div>
 	      <div class="span5">
-		<h3>Create</h3>
+		<h3>Create Portfolio</h3>
 		<form action="createPortfolio.pl" method="POST">
 		  <input type="text" name="portfolio_name" placeholder="Name"/><br/>
 		  <input type="text" name="cash_amount" placeholder="Cash Amount"/><br/>
