@@ -1,0 +1,68 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="jquery.flot.js"> </script>
+</head>
+<body>
+<h1>Future Prices Predictions</h1>
+<h2><TMPL_VAR NAME=SYMBOL></h2>
+<div id='plot-placeholder'style="width:600px;height:300px">
+
+</div>
+<p>We're currently using a time series predictor.</p>
+<input class="interval-rb" type="radio" name="group1" value="5" checked='true'/> 5-day
+<input class="interval-rb" type="radio" name="group1" value="10"/> 10-day
+<input class="interval-rb" type="radio" name="group1" value="30"/> 30-day
+<input class="interval-rb" type="radio" name="group1" value="60"/> 60-day
+<input class="interval-rb" type="radio" name="group1" value="120"/> 120-day
+
+<script>
+//Helper to get an URL parameter
+function getURLParameter(name) {
+	return decodeURI(
+		(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1]);
+}
+foo = 0
+	row = []
+function startPlotting() {
+	var length = $('.interval-rb:checked').val();
+	console.log(length);
+	console.log("startgetting");
+	symbol = getURLParameter("symbol");
+	//definitely not returning json. ugly
+	//callback not working. keep async false to use foo.
+	foo = $.ajax({
+			url : 'prediction-json.pl',
+			data : {
+				"symbol" : symbol,
+				"length" : length
+			},
+			async : false
+		});
+	//get all rows
+	var rows = foo.response.split("\n");
+	console.log(rows);
+	//get columns
+	for (i = 0; i < rows.length; i++) {
+		row[i] = rows[i].split("\t");
+	}
+	
+	datapoints = row;
+	//remove all the i=1, zeros values.
+	for (i = 0; i < datapoints.length; i++) {
+		datapoints[i].splice(1, 1);
+	}
+	datapoints.pop(); //the splitting left out a "" at the end
+	$.plot($("#plot-placeholder"), [datapoints]);
+}
+
+$(document).ready(function () {
+	//bind a handler for the interval radio button's
+	$(".interval-rb").change(function () {
+		startPlotting();
+	});
+	startPlotting();
+});
+</script>
+</body>
+</html>
