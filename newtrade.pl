@@ -65,6 +65,7 @@ if (($action eq "newtrade") && (defined($portfolio)) && ($run==0)) {
 		hidden(-name=>'run',-default=>['1']),
 		submit,
 		end_form;
+		print "<a href=\"quote.pl\">Return to your portfolio</a>";
 }
 
 if (($action eq "newtrade") && (defined($portfolio)) && $run) {	
@@ -89,7 +90,7 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 		if ($direction eq "Sell") {
 			@curr_shares = ExecStockSQL('COL',"SELECT shares FROM PZU918.Holdings WHERE portfolio=$portfolio AND symbol=\'$stock\'");
 			if ($shares>$curr_shares[0]) {
-					print h2("Trasaction failure: not enough shares.");
+					print h2("Transaction failure: not enough shares.");
 				} else {
 					my $shares_left = $curr_shares[0]-$shares;
 					eval {
@@ -101,16 +102,16 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 						}
 					};
 					if ($@) { 
-						print h2("Trasaction failure");
+						print h2("Transaction failure");
 					} else {
-						print h2("Trasaction successfully");
+						print h2("Transaction successful");
 					}
 			}
 			
 		} elsif ($direction eq "Buy") {
 			@asset = ExecStockSQL('COL',"SELECT assets FROM PZU918.Portfolios WHERE id=$portfolio");
 			if ($transact_amt>$asset[0]) {
-					print h2("Trasaction failure: not enough cash.");
+					print h2("Transaction failure: not enough cash.");
 				} else {
 					my $asset_left = $asset[0]-$transact_amt;
 					eval {
@@ -119,14 +120,14 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 						ExecStockSQL(undef,"COMMIT");};
 					if ($@) { 
 						print $@,p;
-						print h2("Trasaction failure");
+						print h2("Transaction failure");
 					} else {
-						 print h2("Trasaction successfully");
+						 print h2("Transaction successful");
 					}
 				}
 			
 		} else {
-			print h2("Trasaction failure: unknown trade action.");
+			print h2("Transaction failure: unknown trade action.");
 		}
 		
 	} else {
@@ -135,7 +136,7 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 		} elsif ($direction eq "Buy") {
 			@asset = ExecStockSQL('COL',"SELECT assets FROM PZU918.Portfolios WHERE id=$portfolio");
 			if ($transact_amt>$asset[0]) {
-					print h2("Trade failure: not enough cash.");
+					print h2("Transaction failure: not enough cash.");
 				} else {
 					my $asset_left = $asset[0]-$transact_amt;
 					eval{
@@ -144,7 +145,7 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 					if ($@) { 
 						print h2("Transaction failure");
 					} else {
-						print h2("Transaction successfully");
+						print h2("Transaction successful");
 					}
 				}
 			
@@ -152,4 +153,5 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 			print h2("Transaction failure: unknown trade action.");
 		}
 	}
+	print "<a href=\"quote.pl\">Return to your portfolio</a>";
 }
