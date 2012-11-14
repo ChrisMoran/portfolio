@@ -45,6 +45,15 @@ CREATE TABLE Holdings (
        constraint holdings_postive_shares check (shares >= 0)
 );
 
+-- View for a unified stock data;
+CREATE VIEW all_stockdailys as SELECT timestamp,symbol,open,close,low,high
+							FROM ((SELECT timestamp, symbol,open,close,low,high 
+									FROM cs339.stocksdaily) 
+							UNION 
+									(SELECT timestamp, symbol, open,close,low,high 
+									FROM newstocksdaily));
+
+
 -- trigger for auto increment functionality for portfolio id
 create or replace trigger portfolio_insert
 before insert on Portfolios
