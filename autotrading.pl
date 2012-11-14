@@ -7,7 +7,7 @@ BEGIN {
   $ENV{PORTF_DB}="lsk250";
   $ENV{PORTF_DBUSER}="lsk250";
   $ENV{PORTF_DBPASS}="z50uWdjGo";
-  $ENV{PATH} = '$ENV{PATH}:/home/pzu918/www/portfolio';
+  $ENV{PATH} = '$ENV{PATH}:/home/lsk250/www/portfolio';
 
   unless ($ENV{BEGIN_BLOCK}) {
     use Cwd;

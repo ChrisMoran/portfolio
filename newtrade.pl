@@ -3,9 +3,9 @@ use CGI qw(:standard);
 use Finance::Quote;
 BEGIN {
   $ENV{PORTF_DBMS}="oracle";
-  $ENV{PORTF_DB}="pzu918";
-  $ENV{PORTF_DBUSER}="pzu918";
-  $ENV{PORTF_DBPASS}="z00wgeGKy";
+  $ENV{PORTF_DB}="lsk250";
+  $ENV{PORTF_DBUSER}="lsk250";
+  $ENV{PORTF_DBPASS}="z50uWdjGo";
 
   unless ($ENV{BEGIN_BLOCK}) {
     use Cwd;
@@ -85,20 +85,20 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 	# print "Shares",$shares,p;
 	# print "Action",$direction,p;
 	
-	@exist= ExecStockSQL('COL',"SELECT count(*) FROM PZU918.Holdings WHERE portfolio = $portfolio AND symbol = \'$stock\'");
+	@exist= ExecStockSQL('COL',"SELECT count(*) FROM lsk250.Holdings WHERE portfolio = $portfolio AND symbol = \'$stock\'");
 	if ($exist[0]) {
 		if ($direction eq "Sell") {
-			@curr_shares = ExecStockSQL('COL',"SELECT shares FROM PZU918.Holdings WHERE portfolio=$portfolio AND symbol=\'$stock\'");
+			@curr_shares = ExecStockSQL('COL',"SELECT shares FROM lsk250.Holdings WHERE portfolio=$portfolio AND symbol=\'$stock\'");
 			if ($shares>$curr_shares[0]) {
 					print h2("Transaction failure: not enough shares.");
 				} else {
 					my $shares_left = $curr_shares[0]-$shares;
 					eval {
-						ExecStockSQL(undef,"UPDATE pzu918.Portfolios SET assets=assets+$transact_amt WHERE id=$portfolio");
+						ExecStockSQL(undef,"UPDATE lsk250.Portfolios SET assets=assets+$transact_amt WHERE id=$portfolio");
 						ExecStockSQL(undef,"COMMIT");
-						ExecStockSQL(undef,"UPDATE pzu918.Holdings SET shares=$shares_left WHERE portfolio=$portfolio AND symbol=\'$stock\'");
+						ExecStockSQL(undef,"UPDATE lsk250.Holdings SET shares=$shares_left WHERE portfolio=$portfolio AND symbol=\'$stock\'");
 						if ($shares_left==0) {
-							ExecStockSQL(undef,"DELETE FROM pzu918.Holdings WHERE portfolio=$portfolio AND symbol=\'$stock\'");
+							ExecStockSQL(undef,"DELETE FROM lsk250.Holdings WHERE portfolio=$portfolio AND symbol=\'$stock\'");
 						}
 					};
 					if ($@) { 
@@ -109,14 +109,14 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 			}
 			
 		} elsif ($direction eq "Buy") {
-			@asset = ExecStockSQL('COL',"SELECT assets FROM PZU918.Portfolios WHERE id=$portfolio");
+			@asset = ExecStockSQL('COL',"SELECT assets FROM lsk250.Portfolios WHERE id=$portfolio");
 			if ($transact_amt>$asset[0]) {
 					print h2("Transaction failure: not enough cash.");
 				} else {
 					my $asset_left = $asset[0]-$transact_amt;
 					eval {
-						ExecStockSQL(undef,"UPDATE pzu918.Portfolios SET assets=$asset_left WHERE id=$portfolio");
-						ExecStockSQL(undef,"UPDATE pzu918.Holdings SET shares=shares+$shares WHERE portfolio=$portfolio AND symbol=\'$stock\'");
+						ExecStockSQL(undef,"UPDATE lsk250.Portfolios SET assets=$asset_left WHERE id=$portfolio");
+						ExecStockSQL(undef,"UPDATE lsk250.Holdings SET shares=shares+$shares WHERE portfolio=$portfolio AND symbol=\'$stock\'");
 						ExecStockSQL(undef,"COMMIT");};
 					if ($@) { 
 						print $@,p;
@@ -134,14 +134,14 @@ if (($action eq "newtrade") && (defined($portfolio)) && $run) {
 		if ($direction eq "Sell") {
 			print h2("You do not own stock $stock");
 		} elsif ($direction eq "Buy") {
-			@asset = ExecStockSQL('COL',"SELECT assets FROM PZU918.Portfolios WHERE id=$portfolio");
+			@asset = ExecStockSQL('COL',"SELECT assets FROM lsk250.Portfolios WHERE id=$portfolio");
 			if ($transact_amt>$asset[0]) {
 					print h2("Transaction failure: not enough cash.");
 				} else {
 					my $asset_left = $asset[0]-$transact_amt;
 					eval{
-					ExecStockSQL(undef,"UPDATE pzu918.Portfolios SET assets=$asset_left WHERE id=$portfolio");
-					ExecStockSQL(undef,"INSERT INTO pzu918.Holdings(portfolio,symbol,shares) VALUES ($portfolio,\'$stock\',$shares)");};
+					ExecStockSQL(undef,"UPDATE lsk250.Portfolios SET assets=$asset_left WHERE id=$portfolio");
+					ExecStockSQL(undef,"INSERT INTO lsk250.Holdings(portfolio,symbol,shares) VALUES ($portfolio,\'$stock\',$shares)");};
 					if ($@) { 
 						print h2("Transaction failure");
 					} else {
