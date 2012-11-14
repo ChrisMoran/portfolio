@@ -9,12 +9,20 @@
 <div id='plot-placeholder'style="width:600px;height:300px">
 
 </div>
-<input class="interval-rb" type="radio" name="group1" value="week" checked='true'/> Week
+<input class="interval-rb" type="radio" name="group1" value="week" /> Week
 <input class="interval-rb" type="radio" name="group1" value="month"/> Month
-<input class="interval-rb" type="radio" name="group1" value="quarter"/> Quarter
+<input class="interval-rb" type="radio" name="group1" value="quarter" checked='true'/> Quarter
 <input class="interval-rb" type="radio" name="group1" value="year"/> Yr
 <input class="interval-rb" type="radio" name="group1" value="5year"/> 5Yr
 
+<hr>
+<h3>Explore other stocks</h3>
+<p>Some options are AA, MSFT, XOM, etc</p>
+<form action="" method="get">
+
+  Go to: <input type="text" name="symbol"><br>
+  <input type="submit" value="Submit">
+</form>
 <script>
 //Helper to get an URL parameter
 function getURLParameter(name) {
