@@ -27,13 +27,13 @@ BEGIN {
 $#ARGV>=0 or die "usage: quote.pl  SYMBOL+\n";
 use stock_data_access;
 #my @all_symbols = ExecStockSQL("2D","select SYMBOL from ALLSTOCKSYMBOLS");
-my @all_symbols=("AAPL","MSFT");
+my @all_symbols=('GS','INTC');
 #foreach my $symbol (@all_symbols){
 my @info=("date","time","high","low","close","open","volume");
 	#print @$symbol;
 	my $q = Finance::QuoteHist->new
 		 (
-		  symbols    => [qw(AAPL)],
+		  symbols    => [@all_symbols],
 		  start_date => '07/03/2006', # or '1 year ago', see Date::Manip
 		  end_date   => 'today',
 		 );	 
@@ -42,7 +42,7 @@ my @info=("date","time","high","low","close","open","volume");
   
 		(my $symbol, my $date, my $open, my $high, my $low, my $close, my $volume) = @$row;
 		$date = parsedate($date);
-		my $error = ExecStockSQL("2D","insert into NEWSTOCKSDAILY (symbol,timestamp,open,high,low,close,volume) values (?,?,?,?,?,?,?)",$symbol,$date,$open,$high,$low,$close,$volume);
+		my $error = ExecStockSQL(undef,"insert into NEWSTOCKSDAILY (symbol,timestamp,open,high,low,close,volume) values (?,?,?,?,?,?,?)",$symbol,$date,$open,$high,$low,$close,$volume);
 		print @$row,"\n";
 		print $error;
 	  }

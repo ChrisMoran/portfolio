@@ -14,7 +14,7 @@ if(defined($user) && defined($password)) {
 	my $cookie = cookie(-name=>'portSession',
 			    -value=>$cookieValue,
 			    -expires=>'+1h');
-	print header(-expires=>'now', -location=>'success.html', -cookie=>$cookie);
+	print header(-expires=>'now', -location=>'userHome.pl', -cookie=>$cookie);
     } else {
 	print header(-expires=>'now', -location=>'login.html');
     }
