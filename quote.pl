@@ -8,7 +8,7 @@ BEGIN {
   $ENV{PORTF_DBMS}="oracle";
   $ENV{PORTF_DB}="lsk250";
   $ENV{PORTF_DBUSER}="lsk250";
-  $ENV{PORTF_DBPASS}="z00wgeGKy";
+  $ENV{PORTF_DBPASS}="z50uWdjGo";
 
   unless ($ENV{BEGIN_BLOCK}) {
     use Cwd;
