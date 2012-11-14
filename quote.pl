@@ -6,9 +6,9 @@ use Finance::Quote;
 
 BEGIN {
   $ENV{PORTF_DBMS}="oracle";
-  $ENV{PORTF_DB}="pzu918";
-  $ENV{PORTF_DBUSER}="pzu918";
-  $ENV{PORTF_DBPASS}="z00wgeGKy";
+  $ENV{PORTF_DB}="lsk250";
+  $ENV{PORTF_DBUSER}="lsk250";
+  $ENV{PORTF_DBPASS}="z50uWdjGo";
 
   unless ($ENV{BEGIN_BLOCK}) {
     use Cwd;
@@ -30,7 +30,7 @@ $portfolio = 1;
 
 @info=("date","time","high","low","close","open","volume");
 
-@symbols = ExecStockSQL('COL',"SELECT symbol FROM PZU918.Holdings WHERE portfolio=$portfolio");
+@symbols = ExecStockSQL('COL',"SELECT symbol FROM lsk250.Holdings WHERE portfolio=$portfolio");
 $con=Finance::Quote->new();
 
 $con->timeout(60);
@@ -53,7 +53,7 @@ foreach $symbol (@symbols) {
 		print "<td>",$quotes{$symbol,$key},"</td>";
 	    }
 	}
-	@shares = ExecStockSQL('COL',"SELECT shares FROM PZU918.Holdings WHERE portfolio = $portfolio AND symbol = \'$symbol\'");
+	@shares = ExecStockSQL('COL',"SELECT shares FROM lsk250.Holdings WHERE portfolio = $portfolio AND symbol = \'$symbol\'");
 	print "<td>",$shares[0],"</td>";
 	print "<td><a href=\"newtrade.pl?act=newtrade&portfolio=$portfolio&stock=$symbol\">New Trade</a></td>";
     }

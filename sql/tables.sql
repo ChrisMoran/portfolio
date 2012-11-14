@@ -10,6 +10,7 @@ CREATE TABLE Portfolios (
        user_name VARCHAR(100) NOT NULL REFERENCES Users(name),
        assets number not null,     
        portfolio_name VARCHAR(100) -- user supplied name for porfolio, optional
+       constraint positive_portfolio_balance check (assets >= 0)
 );
 
 CREATE TABLE AllStockSymbols (
@@ -41,6 +42,7 @@ CREATE TABLE Holdings (
        symbol char(16) NOT NULL REFERENCES AllStockSymbols(symbol),
        shares number NOT NULL, -- number of shares of stock
        constraint pk_holdings primary key (portfolio, symbol)
+       constraint holdings_postive_shares check (shares >= 0)
 );
 
 -- View for a unified stock data;
@@ -86,6 +88,7 @@ after insert on Holdings
 for each row
 begin
 	insert into BuyHistory (portfolio, symbol, shares, timestamp) values (:NEW.portfolio, :NEW.symbol, :NEW.shares, (select dt from UnixTime));
+-- also subtract cash from portfolio once I know how to do that
 end;
 /
 
@@ -96,6 +99,7 @@ for each row
 when (NEW.shares > OLD.shares)
 begin
 	insert into BuyHistory (portfolio, symbol, shares, timestamp) values (:NEW.portfolio, :NEW.symbol, :NEW.shares - :OLD.shares, (select dt from UnixTime));
+-- also subtract cash from portfolio once I know how to do that
 end;
 /
 
@@ -106,6 +110,7 @@ for each row
 when (NEW.shares < OLD.shares)
 begin
 	insert into SellHistory (portfolio, symbol, shares, timestamp) values (:NEW.portfolio, :NEW.symbol, :OLD.shares - :NEW.shares, (select dt from UnixTime));
+-- also subtract cash from portfolio once I know how to do that
 end;
 /
 
