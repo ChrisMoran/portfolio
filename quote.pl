@@ -44,7 +44,7 @@ if(defined($userCookie) && defined($portfolio)) {
 		@shares = ExecStockSQL('COL',"SELECT shares FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $symbol);
 		print "<td>",$shares[0],"</td>";
 		print "<td><a href=\"newtrade.pl?act=newtrade&id=$portfolio&stock=$symbol\">New Trade</a></td>";
-		print "<td><button>Add Price</button></td>;
+		print "<td><button>Add Price</button></td>";
 	    }
 		
 	    print "</tr>";
