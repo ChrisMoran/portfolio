@@ -2,6 +2,7 @@
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="jquery.flot.js"> </script>
+<script type="text/javascript" src="jquery.flot.time.js"> </script>
 </head>
 <body>
 <h1>Historical</h1>
@@ -39,7 +40,12 @@ var dataToSend={"symbol":symbol, "interval":interval};
   $.getJSON('historical-json.pl', dataToSend, function(data){
 		tempdata=data;
 		console.log(data)
-		$.plot($("#plot-placeholder"), [data.plot_data]);
+		plot_data=[];
+		for (i=0;i<data.plot_data.length;i++){
+			plot_data.push([data.plot_data[i][0]*1000,data.plot_data[i][1]]);
+		}
+		console.log(plot_data);
+		$.plot($("#plot-placeholder"), [plot_data],{xaxis: {mode: "time"}});
 	});
 
 }
