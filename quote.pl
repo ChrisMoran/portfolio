@@ -31,16 +31,7 @@ if(defined($userCookie) && defined($portfolio)) {
 	foreach $symbol (@symbols) {
 	    $symbol = trim($symbol);
 	    print "<tr>";
-	    print "<td><div class=\"btn-group\">
-  <a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">
-    $symbol
-    <span class=\"caret\"></span>
-  </a>
-  <ul class=\"dropdown-menu\">
-    <li>Prediction</li>
-  </ul>
-</div>
-</td>";
+	    print "<td><div class=\"btn-group\"><a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">$symbol<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li>Prediction</li></ul></div></td>";
 		
 	    if (!defined($quotes{$symbol,"success"})) { 
 		print "<td colspan=\"7\">No Data</td>";
