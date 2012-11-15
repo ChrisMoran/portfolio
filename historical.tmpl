@@ -50,7 +50,7 @@ var dataToSend={"symbol":symbol, "interval":interval};
 			plot_data.push([data.plot_data[i][0]*1000,data.plot_data[i][1]]);
 		}
 		console.log(plot_data);
-		$.plot($("#plot-placeholder"), [plot_data],{xaxis: {mode: "time"}});
+		$.plot($("#plot-placeholder"), [plot_data],{xaxis: {mode: "time",timeformat: "%d/%m/%y"}});
 	});
 
 }
