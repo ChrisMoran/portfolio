@@ -70,7 +70,7 @@ sub HoldingsValue {
     print $inOp;
     push(@holdings, $portfolio);
 
-    my @results = ExecStockSQL('COL', "select SUM(shares * close) from (select symbol, close from (select symbol, close from all_stockdailys where symbol in ($inOp) order by timestamp desc) where ROWNUM <= 1) natural join (select symbol, shares from holdings where portfolio=?)", @holdings);
+    my @results = ExecStockSQL('COL', "select SUM(shares * close) from (select symbol, close from  all_stockdailys natural join ( select symbol, max(timestamp) as timestamp from all_stockdailys where symbol in ($inOp) group by symbol ) ) natural join (select symbol, shares from holdings where portfolio=?)", @holdings);
 
     return $results[0];
     
