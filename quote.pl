@@ -36,7 +36,7 @@ print "</head>";
 	foreach $symbol (@symbols) {
 	    $symbol = trim($symbol);
 	    print "<tr>";
-	    print "<td><div class=\"btn-group\"><a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">$symbol<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li>Prediction</li></ul></div></td>";
+	    print "<td><div class=\"btn-group\"><a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">$symbol<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"/historical.pl?symbol=$symbol\">Historical</a></li><li><a href=\"/prediction.pl?symbol=$symbol\">Prediction</a></li></ul></div></td>";
 		
 	    if (!defined($quotes{$symbol,"success"})) { 
 		print "<td colspan=\"7\">No Data</td>";
