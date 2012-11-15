@@ -24,15 +24,18 @@ if(defined($userCookie) && defined($portfolio)) {
 	$con->timeout(60);
 
 	my %quotes = $con->fetch("usa",@symbols);
-	print "Content-type: text/html\n\n";
+	print header(-expires=>"now");
 	print "<html><head>";
-print "<script type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>";
-print "<link href=\"bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\"/>";
-print "<script type=\"text/javascript\" src=\"bootstrap/js/bootstrap.min.js\"></script>";
-print "</head>";
-	print "<td><a href=\"newtrade.pl?act=newtrade&id=$portfolio\">BUY A NEW STOCK</a></td><br>";
-	print "<table>";
-	print "<tr><th>Symbol</th><th>Date</th><th>Time</th><th>High</th><th>Low</th><th>Close</th><th>Open</th><th>Volume</th><th>Shares</th><th>Action</th></tr>";
+	print "<script type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>";
+	print "<link href=\"bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\"/>";
+	print "<script type=\"text/javascript\" src=\"bootstrap/js/bootstrap.min.js\"></script>";
+	print "<link href=\"common.css\" rel=\"stylesheet\" media=\"screen\"/>";
+	print "</head>";
+	print "<body>";
+	print "<div class=\"container\"><div class=\"pageRoot\">";
+	print "<h2>Current Holdings</h2>";
+	print "<table class=\"table table-bordered\">";
+	print "<tr><th>Symbol</th><th>Date</th><th>Time</th><th>High</th><th>Low</th><th>Close</th><th>Open</th><th>Volume</th><th>Shares</th><th>Action</th><th>Store</th></tr>";
 	foreach $symbol (@symbols) {
 	    $symbol = trim($symbol);
 	    print "<tr>";
@@ -50,14 +53,15 @@ print "</head>";
 		@shares = ExecStockSQL('COL',"SELECT shares FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $symbol);
 		print "<td>",$shares[0],"</td>";
 		print "<td><a href=\"newtrade.pl?act=newtrade&id=$portfolio&stock=$symbol\">New Trade</a></td>";
-		print "<td><button>Add Price</button></td>";
+		print "<td><button class=\"btn\">Add Price</button></td>";
 	    }
 		
 	    print "</tr>";
 	}
 
-	print "</table><br/>";
-	print "<a href=\"userHome.pl\">Return to home</a>";
+	print "</table><br/><a href=\"newtrade.pl?act=newtrade&id=$portfolio\" class=\"btn btn-primary\">Buy a New Stock</a><br/><br/>";
+	print "<a href=\"userHome.pl\"><strong>Return to home</strong></a>";
+	print "</div></div></body></html>";
     }
 }
 

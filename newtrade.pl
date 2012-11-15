@@ -10,8 +10,14 @@ my $userCookie = cookie('portSession');
 if(defined($userCookie) && defined($portfolio)) {
     my ($userLogin,$password) = split(/\//, $userCookie);
     if(ValidUser($userLogin, $password)) {
-
-	print "Content-type: text/html\n\n";
+	print header(-expires=>'now');
+	print "<html><head>";
+	print "<script type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>";
+	print "<link href=\"bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\"/>";
+	print "<script type=\"text/javascript\" src=\"bootstrap/js/bootstrap.min.js\"></script>";
+	print "<link href=\"common.css\" rel=\"stylesheet\" media=\"screen\"/>";
+	print "</head>";
+	print "<body><div class=\"container form-box\">";
 
 	my $stock = undef;
 	my $action = undef;
@@ -36,21 +42,26 @@ if(defined($userCookie) && defined($portfolio)) {
 	if (($action eq "newtrade") && (defined($portfolio)) && ($run==0)) {
 	    print start_form(-name=>'newtrade'), h2('New Trade');
 	    if (defined($stock)) {
-		print "SYMBOL",textfield(-name=>'stock',default=>[$stock]),p;
+		print "<label class=\"control-label\" for=\"stockSymbol\">Symbol</label>",
+		      textfield(-name=>'stock', -id=>'stockSymbol', default=>[$stock]),p;
 	    } else {
-		print "SYMBOL",textfield(-name=>'stock'),p;
+		print "<label class=\"control-label\" for=\"stockSymbol\">Symbol</label>",
+		      textfield(-name=>'stock', -id=>'stockSymbol', -placeholder=>'Stock Symbol'),p;
 	    }
-	    print "AMNT",textfield(-name=>'amount'),p,
-	    "TRADE",popup_menu(
+	    print "<label class=\"control-label\" for=\"stockAmount\">Amount</label>",
+	    textfield(-name=>'amount', -id=>'stockAmount', -placeholder=>'# of shares'),p,
+	    "<label class=\"control-label\" for=\"buyOrSell\">Buy or Sell</label>",
+	    popup_menu(
 		-name    => 'trade',
+		-id      => 'buyOrSell',
 		-values  => \@trade,
 		-default => 'Buy'
 		),p,
 		hidden(-name=>'id',default=>[$portfolio]),
 		hidden(-name=>'run',-default=>['1']),
-		submit,
+		"<button class=\"btn btn-primary\"  type=\"submit\">Submit</button><br/><br/>",
+		"<a href=\"quote.pl?id=$portfolio\">Return to your portfolio</a>",
 		end_form;
-		print "<a href=\"quote.pl?id=$portfolio\">Return to your portfolio</a>";
 	}
 
 	if (($action eq "newtrade") && (defined($portfolio)) && $run) {	
@@ -139,7 +150,7 @@ if(defined($userCookie) && defined($portfolio)) {
 		    print h2("Transaction failure: unknown trade action.");
 		}
 	    }
-	    print "<a href=\"quote.pl?id=$portfolio\">Return to your portfolio</a>";
+	    print "<a href=\"quote.pl?id=$portfolio\">Return to your portfolio</a></div></body></html>";
 	}
     } else {
 	print header(-expires=>'now', -location=>'login.html');

@@ -13,7 +13,13 @@ if(defined($userCookie)) {
 	my @portfolios = PortfolioInfo($user);
 	my @templPorts;
 	for(my $i = 0; $i <= $#portfolios; $i++) {
-	    push(@templPorts, {ID=>$portfolios[$i][0],NAME=>$portfolios[$i][1],CASH=>$portfolios[$i][2]});
+	    my $estimatedValue = HoldingsValue($portfolios[$i][0]);
+	    my $total = $estimatedValue + $portfolios[$i][2];
+	    push(@templPorts, {ID=>$portfolios[$i][0],
+			       NAME=>$portfolios[$i][1],
+			       CASH=>$portfolios[$i][2],
+			       VALUE=>$estimatedValue,
+		               TOTAL=>$total});
 	}
 	
 	my $template = HTML::Template->new(filename => 'userHome.tmpl');
