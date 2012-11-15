@@ -25,6 +25,11 @@ if(defined($userCookie) && defined($portfolio)) {
 
 	my %quotes = $con->fetch("usa",@symbols);
 	print "Content-type: text/html\n\n";
+	print "<html><head>";
+print "<script type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>";
+print "<link href=\"bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\"/>";
+print "<script type=\"text/javascript\" src=\"bootstrap/js/bootstrap.min.js\"></script>";
+print "</head>";
 	print "<td><a href=\"newtrade.pl?act=newtrade&id=$portfolio\">BUY A NEW STOCK</a></td><br>";
 	print "<table>";
 	print "<tr><th>Symbol</th><th>Date</th><th>Time</th><th>High</th><th>Low</th><th>Close</th><th>Open</th><th>Volume</th><th>Shares</th><th>Action</th></tr>";
