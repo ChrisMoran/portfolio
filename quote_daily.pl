@@ -3,7 +3,7 @@
 use Data::Dumper;
 use Finance::Quote;
 
-$#ARGV>=0 or die "usage: quote.pl  SYMBOL+\n";
+$#ARGV>=0 or die "usage: quote_daily.pl  SYMBOL+\n";
 
 
 @info=("date","time","high","low","close","open","volume");
