@@ -17,6 +17,7 @@ my $userCookie = cookie('portSession');
 if(defined($userCookie) && defined($portfolio)) {
     my ($userLogin,$password) = split(/\//, $userCookie);
     if(ValidUser($userLogin, $password)) {
+#if(1){
 	my @info=("date","time","high","low","close","open","volume");
 	my @symbols = ExecStockSQL('COL',"SELECT symbol FROM Holdings WHERE portfolio=?", $portfolio);
 	my $con=Finance::Quote->new();
@@ -36,7 +37,8 @@ if(defined($userCookie) && defined($portfolio)) {
 	print "<h2>Current Holdings</h2>";
 	print "<table class=\"table table-bordered\">";
 	print "<tr><th>Symbol</th><th>Date</th><th>Time</th><th>High</th><th>Low</th><th>Close</th><th>Open</th><th>Volume</th><th>Shares</th><th>Action</th><th>Store</th></tr>";
-	foreach $symbol (@symbols) {
+my $ii=0;	
+foreach $symbol (@symbols) {
 	    $symbol = trim($symbol);
 	    print "<tr>";
 	    print "<td><div class=\"btn-group\"><a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">$symbol<span class=\"caret\"></span></a><ul class=\"dropdown-menu\"><li><a href=\"historical.pl?symbol=$symbol\">Historical</a></li><li><a href=\"prediction.pl?symbol=$symbol\">Prediction</a></li><li><a href=\"autotrading.pl?stock=$symbol\">Auto Trading</a></li></ul></div></td>";
@@ -46,14 +48,14 @@ if(defined($userCookie) && defined($portfolio)) {
 	    } else {
 		
 		
-		($symbol, my $date, my $open, my $high, my $low, my $close, my $volume) = @info;
+		#($symbol, my $date, my $open, my $high, my $low, my $close, my $volume) = @info;
 		foreach $key (@info) {
 		    if (defined($quotes{$symbol,$key})) {
-			print "<td>",$quotes{$symbol,$key},"</td>";
+			print "<td class=\"$ii $key\">",$quotes{$symbol,$key},"</td>";
 		    }
 		}
 		
-		print"<td>$symbol</td><td>$date</td><td>$open</td><td>$high</td><td>$low</td><td>$close</td><td>$volume</td>";
+		#print"<td>$symbol</td><td>$date</td><td>$open</td><td>$high</td><td>$low</td><td>$close</td><td>$volume</td>";
 		@shares = ExecStockSQL('COL',"SELECT shares FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $symbol);
 		print "<td>",$shares[0],"</td>";
 		print "<td><a href=\"newtrade.pl?act=newtrade&id=$portfolio&stock=$symbol\">New Trade</a></td>";
@@ -61,6 +63,7 @@ if(defined($userCookie) && defined($portfolio)) {
 	    }
 		
 	    print "</tr>";
+		$ii=$ii+1;
 	}
 
 	print "</table><br/><a href=\"newtrade.pl?act=newtrade&id=$portfolio\" class=\"btn btn-primary\">Buy a New Stock</a><br/><br/>";
