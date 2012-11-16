@@ -45,6 +45,8 @@ if(defined($userCookie) && defined($portfolio)) {
 		print "<td colspan=\"7\">No Data</td>";
 	    } else {
 		
+		
+		($symbol, my $date, my $open, my $high, my $low, my $close, my $volume) = @info;
 		foreach $key (@info) {
 		    if (defined($quotes{$symbol,$key})) {
 			print "<td>",$quotes{$symbol,$key},"</td>";
