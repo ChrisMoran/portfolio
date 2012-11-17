@@ -66,7 +66,18 @@ foreach $symbol (@symbols) {
 		$ii=$ii+1;
 	}
 
-	print "</table><br/><a href=\"newtrade.pl?act=newtrade&id=$portfolio\" class=\"btn btn-primary\">Buy a New Stock</a><br/><br/>";
+	print "</table><br/>";
+	print "<a href=\"newtrade.pl?act=newtrade&id=$portfolio\" class=\"btn btn-primary\">Buy a New Stock</a><br/><br/>";
+	print "<h2>Statistics</h2>";
+
+	print IndividualStatsTable($portfolio);
+
+	my ($covTable,$corrTable) =  CovAndCorrTables($portfolio);
+	print $covTable;
+	print $corrTable;
+	
+	print "<p>Statistics use the close values and all dates availble. Historic is data pre-2006, new data is after that time, split due to incomplete picture of market as a whole after 2006.</p>";
+	
 	print "<a href=\"userHome.pl\"><strong>Return to home</strong></a>";
 	print "</div></div></body></html>";
     }
