@@ -239,7 +239,6 @@ sub CorrelationMatrix {
     $field2 = "close" if !defined $field2;
 
     
-    use Data::Dumper;
 
     my @symbols = ExecStockSQL('COL', 'select symbol from holdings where portfolio=?', $portfolio);
 
@@ -264,8 +263,6 @@ sub CorrelationMatrix {
 }
     
 sub CovAndCorrTables {
-    use Data::Dumper;
-    print Dumper(@_);
     my ($portfolio, $field1, $field2, $from, $to) = @_;
     my ($sym_ref, $cov_ref, $corr_ref) = CorrelationMatrix($portfolio, $field1, $field2, $from, $to);
     my @allSymbols = @$sym_ref;
