@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Portfolio Home</title>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <link href="common.css" rel="stylesheet" media="screen"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-box">
+	<h2>Individual Detailed Stats</h2>
+	<form action="indStats.pl" method="POST">
+          <label class="control-label" for="indField">Field</label>
+	  <select name="field" id="indField">
+	    <option value="open">Open</option>
+	    <option value="high">High</option>
+	    <option value="low">Low</option>
+	    <option value="close">Close</option>
+	    <option value="volume">Volume</option>
+	  </select>
+	  <label class="control-label" for="indFrom">Field</label>
+	  <input type="text" class="input" id="indFrom" name="from" placeholder="From Unix Time"/><br/>
+	  <label class="control-label" for="indTo">To</label>
+	  <input type="text" class="input" id="indTo" name="to" placeholder="To Unix Time"/><br/>
+	  <input type="hidden" name="id" value="<TMPL_VAR NAME="PORTFOLIO">"/>
+	  <button type="submit" class="btn btn-large btn-primary">Compute</button>
+	</form>
+      </div>
+      <div class="form-box">
+	<h2>Covarience and Correlation Detailed Stats</h2>
+	<form action="groupStats.pl" method="POST">
+          <label class="control-label" for="groupField1">Field 1</label>
+	  <select name="field1" id="groupField1">
+	    <option value="open">Open</option>
+	    <option value="high">High</option>
+	    <option value="low">Low</option>
+	    <option value="close">Close</option>
+	    <option value="volume">Volume</option>
+	  </select>
+	  <label class="control-label" for="groupField2">Field 2</label>
+	  <select name="field2" id="groupField2">
+	    <option value="open">Open</option>
+	    <option value="high">High</option>
+	    <option value="low">Low</option>
+	    <option value="close">Close</option>
+	    <option value="volume">Volume</option>
+	  </select>
+	  <label class="control-label" for="groupFrom">Field</label>
+	  <input type="text" class="input" id="groupFrom" name="from" placeholder="From Unix Time"/><br/>
+	  <label class="control-label" for="groupTo">To</label>
+	  <input type="text" class="input" id="groupTo" name="to" placeholder="To Unix Time"/><br/>
+	  <input type="hidden" name="id" value="<TMPL_VAR NAME="PORTFOLIO">"/>
+	  <button type="submit" class="btn btn-large btn-primary">Compute</button>
+	</form>
+      </div>
+    </div>
+  </body>
+<?html>

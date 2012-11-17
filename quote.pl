@@ -75,7 +75,7 @@ foreach $symbol (@symbols) {
 	my ($covTable,$corrTable) =  CovAndCorrTables($portfolio);
 	print $covTable;
 	print $corrTable;
-	
+	print "<a href=\"stats.pl?id=$portfolio\" class=\"btn btn-medium btn-primary\">Detailed Stats</a><br/>";
 	print "<p>Statistics use the close values and all dates availble. Historic is data pre-2006, new data is after that time, split due to incomplete picture of market as a whole after 2006.</p>";
 	
 	print "<a href=\"userHome.pl\"><strong>Return to home</strong></a>";
