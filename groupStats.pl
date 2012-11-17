@@ -21,6 +21,9 @@ if(defined($userCookie) && defined($portfolio)) {
 	print "<link href=\"common.css\" rel=\"stylesheet\" media=\"screen\"/>";
 	print "</head>";
 	print "<body>";
+	print "<div class=\"navbar navbar-inverse navbar-fixed-top\" style=\"margin-bottom: 20px;\"><div class=\"navbar-inner\">";
+	print "<div class=\"container\"><a class=\"brand\" href=\"#\">Portfolio Manager</a><ul class=\"nav\">";
+	print "<li><a href=\"userHome.pl\">Home</a></li><li><a href=\"logout.pl\">Logout</a></li></ul></div></div></div>";
 	print "<div class=\"container\"><div class=\"pageRoot\">";
 	$from = undef if $from eq '';
 	$to = undef if $to eq '';
