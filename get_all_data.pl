@@ -28,7 +28,7 @@ $plot=0;
 	     "from=s" => \$from,
 	     "to=s" => \$to, "plot" => \$plot);
 	     
-$usage = "usage: get_data.pl [--open] [--high] [--low] [--close] [--vol] [--from=time] [--to=time] [--plot] SYMBOL\n";
+$usage = "usage: get_all_data.pl [--open] [--high] [--low] [--close] [--vol] [--from=time] [--to=time] [--plot] SYMBOL\n";
 
 $#ARGV == 0 or die $usage;
 
