@@ -33,6 +33,9 @@ if(defined($userCookie) && defined($portfolio)) {
 	print "<link href=\"common.css\" rel=\"stylesheet\" media=\"screen\"/>";
 	print "</head>";
 	print "<body>";
+	print "<div class=\"navbar navbar-inverse navbar-fixed-top\" style=\"margin-bottom: 20px;\"><div class=\"navbar-inner\">";
+	print "<div class=\"container\"><a class=\"brand\" href=\"#\">Portfolio Manager</a><ul class=\"nav\">";
+	print "<li><a href=\"userHome.pl\">Home</a></li><li><a href=\"logout.pl\">Logout</a></li></ul></div></div></div>";
 	print "<div class=\"container\"><div class=\"pageRoot\">";
 	print "<h2>Current Holdings</h2>";
 	print "<table class=\"table table-bordered\">";
@@ -66,7 +69,18 @@ foreach $symbol (@symbols) {
 		$ii=$ii+1;
 	}
 
-	print "</table><br/><a href=\"newtrade.pl?act=newtrade&id=$portfolio\" class=\"btn btn-primary\">Buy a New Stock</a><br/><br/>";
+	print "</table><br/>";
+	print "<a href=\"newtrade.pl?act=newtrade&id=$portfolio\" class=\"btn btn-primary\">Buy a New Stock</a><br/><br/>";
+	print "<h2>Statistics</h2>";
+
+	print IndividualStatsTable($portfolio);
+
+	my ($covTable,$corrTable) =  CovAndCorrTables($portfolio);
+	print $covTable;
+	print $corrTable;
+	print "<a href=\"stats.pl?id=$portfolio\" class=\"btn btn-medium btn-primary\">Detailed Stats</a><br/>";
+	print "<p>Statistics use the close values and all dates availble. Historic is data pre-2006, new data is after that time, split due to incomplete picture of market as a whole after 2006.</p>";
+	
 	print "<a href=\"userHome.pl\"><strong>Return to home</strong></a>";
 	print "</div></div></body></html>";
     }

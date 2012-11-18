@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use lib "/home/lsk250/myperllib";
+#use lib "/home/lsk250/myperllib";
 use strict;
 use CGI qw(:standard);
 use DBI;
