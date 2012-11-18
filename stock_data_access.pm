@@ -71,6 +71,12 @@ sub ExecStockSQL {
 
   my @data;
 
+  if (defined $type and $type eq "NOTHING") { 
+    $sth->finish();
+    $dbh->disconnect();
+    return;
+  }
+  
   # One row of output
   if (defined $type and $type eq "ROW") { 
     @data=$sth->fetchrow_array();
@@ -86,6 +92,7 @@ sub ExecStockSQL {
     push @ret, [@data];
   }
 
+	
   # single column
   if (defined $type and $type eq "COL") { 
     @data = map {$_->[0]} @ret;

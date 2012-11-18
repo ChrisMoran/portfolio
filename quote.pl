@@ -62,7 +62,7 @@ foreach $symbol (@symbols) {
 		@shares = ExecStockSQL('COL',"SELECT shares FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $symbol);
 		print "<td>",$shares[0],"</td>";
 		print "<td><a href=\"newtrade.pl?act=newtrade&id=$portfolio&stock=$symbol\">New Trade</a></td>";
-		print "<td><button class=\"btn\">Add Price</button></td>";
+		print "<td><button class=\"$ii btn\">Store Price</button></td>";
 	    }
 		
 	    print "</tr>";

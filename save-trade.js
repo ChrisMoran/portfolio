@@ -9,6 +9,7 @@ var close=$("."+nbr+".close").text()
 
 dataToSend={"symbol": symbol,"date":date,"open":open,"high":high,"low":low,"close":close}; 
 
+console.log(dataToSend);
 
 $.getJSON('save-price.pl', dataToSend, function(data){
 		
