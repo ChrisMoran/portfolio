@@ -2,8 +2,17 @@
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="jquery.flot.js"> </script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<link href="common.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
+<div class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 20px;"><div class="navbar-inner">
+<div class="container"><a class=\"brand\" href="#">Portfolio Manager</a><ul class=\"nav\">
+<li><a href="userHome.pl">Home</a></li><li><a href="logout.pl">Logout</a></li></ul></div></div></div>
+
+
+<div class="pageRoot">
 <h1>Future Prices Predictions</h1>
 <h2><TMPL_VAR NAME=SYMBOL></h2>
 <div id='plot-placeholder'style="width:600px;height:300px">
@@ -15,7 +24,7 @@
 <input class="interval-rb" type="radio" name="group1" value="30"/> 30-day
 <input class="interval-rb" type="radio" name="group1" value="60"/> 60-day
 <input class="interval-rb" type="radio" name="group1" value="120"/> 120-day
-
+</div>
 <script>
 //Helper to get an URL parameter
 function getURLParameter(name) {

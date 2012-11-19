@@ -7,7 +7,7 @@ BEGIN {
   $ENV{PORTF_DB}="lsk250";
   $ENV{PORTF_DBUSER}="lsk250";
   $ENV{PORTF_DBPASS}="z50uWdjGo";
-  $ENV{PATH} = '$ENV{PATH}:/home/lsk250/www/portfolio';
+  #$ENV{PATH} = '$ENV{PATH}:/home/lsk250/www/portfolio';
 
   unless ($ENV{BEGIN_BLOCK}) {
     use Cwd;
@@ -74,30 +74,28 @@ $initialcash = param('initial_cash');
 $tradecost=param('tradecost');
 $timeframe=param('timeframe');
 
-# $initialcash = 5000;
-# $tradecost=10;
-# $timeframe='Past week';
-
 if (defined($initialcash) && defined($tradecost) && defined($timeframe)) {
   
-my $timepassed;
+my $numrows;
 switch ($timeframe) {
-  case "Past week" {$timepassed=604800;}
-  case "Past month" {$timepassed=2629744;}
-  case "Past quarter" {$timepassed=7889232;}
-  case "Past year" {$timepassed=31556926;}
-  case "Past 5 years" {$timepassed=157784630;}
-  case "Past 10 year" {$timepassed=315569260;}
+  case "Past week" {$numrows=5;}
+  case "Past month" {$numrows=21;}
+  case "Past quarter" {$numrows=63;}
+  case "Past year" {$numrows=252;}
+  case "Past 5 years" {$numrows=1260;}
+  case "Past 10 years" {$numrows=2520;}
 }
 
-my $start_time=time-$timepassed;
+eval {
+  $rows = ExecStockSQL("TEXT","SELECT * FROM (SELECT timestamp, close FROM all_stockdailys WHERE symbol=rpad(?,16) ORDER BY TIMESTAMP DESC)  WHERE ROWNUM <= ?",$stock,$numrows);
+};
 
 $lastcash=$initialcash;
 $laststock=0;
 $lasttotal=$lastcash;
 $lasttotalaftertradecost=$lasttotal;
 
-open(STOCK, "get_all_data.pl --close --from=$start_time $stock |") or die "Could not open STOCK";
+open(STOCK, "<",\$rows) or die "Could not open STOCK";
 
 $cash=0;
 $stock=0;
@@ -179,15 +177,3 @@ else {
 
 print p,"<a href=\"quote.pl\">Return to your portfolio</a>";
 		
-# sub get_all_data {
-# my @param=@_;
-# my $symbol=$param[0];
-# my $from=$param[1];
-# my $sql;
-# $sql = "select timestamp, close from ".GetStockPrefix()."all_stockdailys";
-# $sql.= " where symbol = '$symbol'";
-# $sql.= " and timestamp >= $from";
-# $sql.= " order by timestamp";
-# my $data = ExecStockSQL("TEXT",$sql);
-# return $data;  
-# }
