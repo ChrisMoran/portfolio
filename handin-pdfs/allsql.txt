@@ -1,0 +1,88 @@
+Below should be all the DML and DQL statemets. These were extracted with grep from all the code.
+
+SELECT DISTINCT symbol FROM holdings;
+
+INSERT INTO newstocksdaily(symbol,timestamp,open,high,low,close,volume) VALUES (?,?,?,?,?,?,?)", $symbol,$timestamp,$open,$high,$low,$close,$volume
+
+SELECT * FROM (SELECT timestamp, close FROM all_stockdailys WHERE symbol=rpad(?,16) ORDER BY TIMESTAMP DESC)  WHERE ROWNUM <= ?",$stock,$numrows);
+
+SELECT * FROM ((SELECT timestamp, close FROM ".GetStockPrefix()."StocksDaily WHERE symbol=rpad(?,16) ) UNION (SELECT timestamp, close FROM NEWSTOCKSDAILY WHERE 
+symbol=rpad(?,16) )) WHERE ROWNUM <= ?",$symbol,$symbol,$num_rows);
+
+SELECT * FROM (SELECT timestamp, close FROM all_stockdailys WHERE symbol=rpad(?,16) ORDER BY TIMESTAMP DESC )  WHERE ROWNUM <= ?",$symbol,$num_rows);
+
+SELECT * FROM (SELECT symbol, timestamp, avg(close) OVER (partition by symbol ORDER BY timestamp ASC ROWS BETWEEN ? PRECEDING AND CURRENT ROW) movingavg FROM all_stockdailys WHERE symbol=rpad(?,16) ORDER BY TIMESTAMP DESC) WHERE ROWNUM < ?;
+
+
+SELECT count(*) FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $stock
+
+SELECT shares FROM Holdings WHERE portfolio=? AND symbol=rpad(?, 16)", $portfolio, $stock)
+
+UPDATE Portfolios SET assets=assets+? WHERE id=?", $transact_amt, $portfolio;
+
+UPDATE Holdings SET shares=? WHERE portfolio=? AND symbol=rpad(?, 16)", $shares_left, $portfolio, $stock
+
+DELETE FROM Holdings WHERE portfolio=? AND symbol=rpad(?, 16)", $portfolio, $stock
+
+SELECT assets FROM Portfolios WHERE id=?", $portfolio)
+
+UPDATE Portfolios SET assets=? WHERE id=?", $asset_left, $portfolio
+
+UPDATE Holdings SET shares=shares+? WHERE portfolio=? AND symbol=rpad(?, 16)", $shares, $portfolio, $stock)
+
+SELECT assets FROM Portfolios WHERE id=?", $portfolio
+
+UPDATE Portfolios SET assets=? WHERE id=?", $asset_left, $portfolio
+
+INSERT INTO Holdings(portfolio,symbol,shares) VALUES (?,?,?)", $portfolio, $stock, $shares)
+
+select first, last from CS339.stockssymbols where symbol=rpad(?,16)', $symbol)
+
+select count(*) from newstocksdaily where symbol=rpad(?,16)', $symbol
+
+select min(timestamp), max(timestamp) from newstocksdaily where symbol=rpad(?,16)', $symbol);
+
+insert into CacheBeta (symbol, beta, field, startTime, endTime) values (rpad(?,16),?,?,?,?)', $symbol, $beta, $field, $from, $to);
+
+insert into CacheCoeffVar (symbol, coeffvar, field, startTime, endTime) values (rpad(?,16),?,?,?,?)', $symbol, $coeffvar, $field, $from, $to);
+
+select coeffvar from CacheCoeffVar where symbol=rpad(?,16) and field=? and startTime=? and endTime=?', $symbol, $field, $from, $to);
+
+select beta from CacheBeta where symbol=rpad(?,16) and field=? and startTime=? and endTime=?', $symbol, $field, $from, $to);
+
+select symbol from holdings where portfolio=?', $portfolio);
+
+insert into cachecovarience (symbol1, symbol2, cov, corr, field1, field2, startTime, endTime) values (rpad(?,16), rpad(?,16), ?, ?, ?, ?, ?, ?)', $symbol1, $symbol2, $cov, $corr ,$field1, $field2, $start, $end);
+
+select cov, corr from cachecovarience where symbol1=rpad(?,16) and symbol2=rpad(?,16) and field1=? and field2=? and startTime=? and endTime=?', $s1, $s2, $field1, $field2, $from, $to);
+
+select symbol from holdings where portfolio=?', $portfolio)
+
+select count(*) from Users where name=? and password=?', $user, $pass)
+
+select count(*) from Users where name=?', $user);
+
+insert into users (name, password) values (?, ?)', $user, $pass);
+
+select id, portfolio_name, assets from Portfolios where user_name=?', $user);
+
+insert into portfolios (user_name, assets, portfolio_name) values (?, ?, ?)', $user, $cash_amount, $portfolio_name);
+
+select assets from portfolios where user_name=? and id=?', $user, $id);
+
+select symbol from holdings where portfolio=?', $portfolio);
+
+select SUM(shares * close) from (select symbol, close from  all_stockdailys natural join ( select symbol, max(timestamp) as timestamp from all_stockdailys where symbol in ($inOp) group by symbol ) ) natural join (select symbol, shares from holdings where portfolio=?)", @holdings);
+
+select SYMBOL from ALLSTOCKSYMBOLS");
+
+insert into NEWSTOCKSDAILY (symbol,timestamp,open,high,low,close,volume) values (?,?,?,?,?,?,?)",$symbol,$date,$open,$high,$low,$close,$volume);
+
+insert into NEWSTOCKSDAILY (symbol,timestamp,open,high,low,close,volume) values (?,?,?,?,?,?,?)",$symbol,$timestamp,$open,$high,$low,$close,$volume);
+
+SELECT symbol FROM Holdings WHERE portfolio=?", $portfolio);
+
+SELECT shares FROM Holdings WHERE portfolio = ? AND symbol = rpad(?, 16)", $portfolio, $symbol);
+
+INSERT INTO newstocksdaily(symbol,timestamp,open,high,low,close,volume) VALUES (?,?,?,?,?,?,?)", $symbol,$timestamp,$open,$high,$low,$close,$volume);
+
