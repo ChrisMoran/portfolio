@@ -27,8 +27,12 @@
 <input class="interval-rb" type="radio" name="group1" value="month"/> Month
 <input class="interval-rb" type="radio" name="group1" value="quarter" checked='true'/> Quarter
 <input class="interval-rb" type="radio" name="group1" value="year"/> Yr
-<input class="interval-rb" type="radio" name="group1" value="5year"/> 5Yr
-
+<input class="interval-rb" type="radio" name="group1" value="5year"/> 5Yr <hr>
+<h4>Extra credit?</h4>
+<p>Simple Moving Averages is a widely use technical indicator for financial data</p>
+<p>Experimental Simple Moving Average Feature: type in the 'n' for the desired SMA (usually in the 10-200 range) and click on 'Plot SMA'. Multiple SMAs can be graphed in same plot. To remove SMAs and just leave historical data, click Reset Data.</p>
+<button id="ma_btn">Plot SMA</button><input id="n" type="text" value="50">
+<button id="reset_btn">Reset Data</button>
 <hr>
 <h3>Explore other stocks</h3>
 <p>Some options are AA, MSFT, XOM, etc</p>
@@ -39,38 +43,76 @@
 </form>
 </div>
 <script>
+main_data=new Array();
 //Helper to get an URL parameter
 function getURLParameter(name) {
-    return decodeURI(
-        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-    );
+	return decodeURI(
+		(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1]);
 }
-tempdata=0
-function startPlotting(){
-var interval = $('.interval-rb:checked').val();
-console.log(interval);
-var symbol = getURLParameter("symbol");
-var dataToSend={"symbol":symbol, "interval":interval};
-  $.getJSON('historical-json.pl', dataToSend, function(data){
-		tempdata=data;
-		console.log(data)
-		plot_data=[];
-		for (i=0;i<data.plot_data.length;i++){
-			plot_data.push([data.plot_data[i][0]*1000,data.plot_data[i][1]]);
+tempdata = 0
+function startPlotting() {
+main_data=new Array();
+	var interval = $('.interval-rb:checked').val();
+	console.log(interval);
+	var symbol = getURLParameter("symbol");
+	var dataToSend = {
+		"symbol" : symbol,
+		"interval" : interval
+	};
+	$.getJSON('historical-json.pl', dataToSend, function (data) {
+		tempdata = data;
+		console.log(data);
+		
+		plot_data = [];
+		for (i = 0; i < data.plot_data.length; i++) {
+			plot_data.push([data.plot_data[i][0] * 1000, data.plot_data[i][1]]);
 		}
 		console.log(plot_data);
-		$.plot($("#plot-placeholder"), [plot_data],{xaxis: {mode: "time",timeformat: "%d/%m/%y"}});
+		main_data.push({label: "Historical", data: plot_data});
+		$.plot($("#plot-placeholder"), main_data, {
+			xaxis : {
+				mode : "time",
+				timeformat : "%d/%m/%y"
+			}
+		});
 	});
-
+	
 }
-
-jQuery(document).ready(function($) {
-	//bind a handler for the interval radio button's
-	$(".interval-rb").change(function(){
+function plotMA() {
+var n = $('#n').val();
+	var interval = $('.interval-rb:checked').val();
+	var symbol = getURLParameter("symbol");
+	var dataToSend = {
+		"symbol" : symbol,
+		"interval" : interval,
+		"n": n
+	};
+	$.getJSON('moving_avg-json.pl', dataToSend, function (data) {
+		plot_data = [];
+		for (i = 0; i < data.plot_data.length; i++) {
+			plot_data.push([data.plot_data[i][1] * 1000, data.plot_data[i][2]]);
+		}
+		main_data.push({label: n+"SMA", data: plot_data});
+		$.plot($("#plot-placeholder"), main_data, {
+			xaxis : {
+				mode : "time",
+				timeformat : "%d/%m/%y"
+			}
+		});
+		
+	}
+		
+	)};
+	jQuery(document).ready(function ($) {
+		//bind a handler for the interval radio button's
+		$(".interval-rb").change(function () {
+			startPlotting();
+		});
 		startPlotting();
+		
+		$("#ma_btn").click(plotMA);
+		$("#reset_btn").click(function(){main_data=new Array();startPlotting();});
 	});
-	startPlotting();
-});
 </script>
 </body>
 </html>
