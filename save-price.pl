@@ -22,7 +22,7 @@ ExecStockSQL("NOTHING","INSERT INTO newstocksdaily(symbol,timestamp,open,high,lo
 };
 print header(-expires=>'now');
 if ($@) { 
-			    print "Failed to store price.";
+			    print "Failed to store price. Price was probably stored already.";
 			} else {
 			    print "Succesfully stored price.";
 			}
