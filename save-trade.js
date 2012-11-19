@@ -1,16 +1,27 @@
-
-nbr=this.id or something
-var symbol=$("."+nbr+".btn.dropdown-toggle").text()
-var date=$("."+nbr+".date").text()
-var open=$("."+nbr+".open").text()
-var high=$("."+nbr+".high").text()
-var low=$("."+nbr+".low").text()
-var close=$("."+nbr+".close").text()
-
-dataToSend={"symbol": symbol,"date":date,"open":open,"high":high,"low":low,"close":close}; 
-
-console.log(dataToSend);
-
-$.getJSON('save-price.pl', dataToSend, function(data){
-		
-	});
+$(document).ready(function ($) {
+	$(".storebtn").click(function () {
+		var nbr = this.className.split(" ")[0];
+		var symbol = $("." + nbr + ".symbol").text()
+			var dataToSend = {
+			"symbol" : symbol
+		};
+		console.log(dataToSend);
+		$.get('save-price.pl', dataToSend, function (data) {
+			alert(data);
+		});
+	})
+	
+	closeCells=$(".close")
+	for (i = 0; i < closeCells.length; i++) {
+		symbolNbr=closeCells[i].className.split(" ")[0];
+		closePrice=$("."+symbolNbr+".close").text();
+		openPrice=$("."+symbolNbr+".open").text();
+		if(closePrice>openPrice){
+		$("."+symbolNbr+".close").css('color', 'green');
+		}
+		else{
+			$("."+symbolNbr+".close").css('color', 'red');
+		}
+	}
+	
+});
