@@ -1,6 +1,7 @@
 CREATE TABLE Users (
        name VARCHAR(100) NOT NULL PRIMARY KEY,
-       password VARCHAR(100) NOT NULL -- this should really be hashed value of password, ask group what they think
+       password VARCHAR(100) NOT NULL, -- this should really be hashed value of password, ask group what they think
+       constraint passwd_not_null CHECK (password LIKE '__%')
 );
 
 create sequence portfolio_id_seq start with 1 increment by 1;
@@ -9,7 +10,7 @@ CREATE TABLE Portfolios (
        id number NOT NULL PRIMARY KEY,
        user_name VARCHAR(100) NOT NULL REFERENCES Users(name),
        assets number not null,     
-       portfolio_name VARCHAR(100) -- user supplied name for porfolio, optional
+       portfolio_name VARCHAR(100), -- user supplied name for porfolio, optional
        constraint positive_portfolio_balance check (assets >= 0)
 );
 
@@ -21,7 +22,7 @@ CREATE TABLE AllStockSymbols (
 );
 
 -- need writable table for new stocks we might add, nice to have all in one table
-INSERT INTO AllStockSymbols (symbol, count, first, last) (SELECT * from CS339.StocksSymbols);
+--INSERT INTO AllStockSymbols (symbol, count, first, last) (SELECT * from CS339.StocksSymbols);
 
 -- table for new stacks, CS339.StocksDaily too big for copy
 CREATE TABLE NewStocksDaily (
@@ -41,7 +42,7 @@ CREATE TABLE Holdings (
        portfolio number NOT NULL REFERENCES Portfolios(id),
        symbol char(16) NOT NULL REFERENCES AllStockSymbols(symbol),
        shares number NOT NULL, -- number of shares of stock
-       constraint pk_holdings primary key (portfolio, symbol)
+       constraint pk_holdings primary key (portfolio, symbol),
        constraint holdings_postive_shares check (shares >= 0)
 );
 
