@@ -49,7 +49,7 @@ CREATE TABLE Holdings (
 CREATE VIEW all_stockdailys as SELECT timestamp,symbol,open,close,low,high
 							FROM ((SELECT timestamp, symbol,open,close,low,high 
 									FROM cs339.stocksdaily) 
-							UNION 
+							UNION
 									(SELECT timestamp, symbol, open,close,low,high 
 									FROM newstocksdaily));
 
